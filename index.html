@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Plan Helper - AI Investment Advisor</title>
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+    <!-- Navigation Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <span class="logo-icon">📈</span>
+                <div>
+                    <h1 class="logo-title" data-th="Portfolio Plan Helper" data-en="Portfolio Plan Helper">Portfolio Plan Helper</h1>
+                    <p class="logo-subtitle" data-th="ระบบช่วยเหลือวางแผนการลงทุนด้วย AI & Machine Learning" data-en="AI-Powered Investment Planning & ML Advisor">ระบบช่วยเหลือวางแผนการลงทุนด้วย AI & Machine Learning</p>
+                </div>
+            </div>
+            <div class="controls-area">
+                <button id="langToggleBtn" class="btn-secondary" onclick="toggleLanguage()">🇹🇭 TH / 🇬🇧 EN</button>
+                <button id="themeToggleBtn" class="btn-secondary" onclick="toggleTheme()">🌙 Dark Mode</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- Navigation Tabs (Only 3 Tabs: Tab 4 Removed) -->
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab(1)" id="tabBtn1">
+                <span class="tab-icon">🤖</span>
+                <span data-th="1. Supervised Learning & ประเมินความเสี่ยง" data-en="1. Supervised ML & Risk Survey">1. Supervised Learning & ประเมินความเสี่ยง</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab(2)" id="tabBtn2">
+                <span class="tab-icon">📊</span>
+                <span data-th="2. Unsupervised Learning & Segmentation" data-en="2. Unsupervised ML & Segmentation">2. Unsupervised Learning & Segmentation</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab(3)" id="tabBtn3">
+                <span class="tab-icon">📈</span>
+                <span data-th="3. จำลองพอร์ต & Financial Metrics" data-en="3. Portfolio Simulator & Metrics">3. จำลองพอร์ต & Financial Metrics</span>
+            </button>
+        </nav>
+
+        <!-- TAB 1: Supervised Learning & Risk Assessment -->
+        <section id="tab1" class="tab-content active">
+            <div class="grid-2">
+                <!-- Questionnaire Card -->
+                <div class="card">
+                    <h2 class="card-title" data-th="📋 แบบประเมินความเสี่ยงลูกค้า (5 ข้อ)" data-en="📋 Client Risk Assessment (5 Questions)">📋 แบบประเมินความเสี่ยงลูกค้า (5 ข้อ)</h2>
+                    <form id="riskForm" onsubmit="event.preventDefault(); calculateRiskAndRecommend();">
+                        <div class="form-group">
+                            <label data-th="1. ท่านมีเป้าหมายระยะเวลาการลงทุนนานเท่าใด?" data-en="1. What is your investment time horizon?">1. ท่านมีเป้าหมายระยะเวลาการลงทุนนานเท่าใด?</label>
+                            <select id="q1" class="form-select">
+                                <option value="1" data-th="น้อยกว่า 1 ปี (เน้นสภาพคล่อง)" data-en="Less than 1 year (High Liquidity)">น้อยกว่า 1 ปี (เน้นสภาพคล่อง)</option>
+                                <option value="2" data-th="1 - 3 ปี" data-en="1 - 3 years">1 - 3 ปี</option>
+                                <option value="3" selected data-th="3 - 5 ปี" data-en="3 - 5 years">3 - 5 ปี</option>
+                                <option value="4" data-th="มากกว่า 5 ปี ขึ้นไป" data-en="More than 5 years">มากกว่า 5 ปี ขึ้นไป</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-th="2. หากพอร์ตลงทุนขาดทุน 15% ในระยะสั้น ท่านจะทำอย่างไร?" data-en="2. How would you react if your portfolio dropped 15%?">2. หากพอร์ตลงทุนขาดทุน 15% ในระยะสั้น ท่านจะทำอย่างไร?</label>
+                            <select id="q2" class="form-select">
+                                <option value="1" data-th="ขายสินทรัพย์ทั้งหมดทันทีเพื่อลดความเสี่ยง" data-en="Sell all assets immediately">ขายสินทรัพย์ทั้งหมดทันทีเพื่อลดความเสี่ยง</option>
+                                <option value="2" data-th="ขายบางส่วนเพื่อความสบายใจ" data-en="Sell partially for safety">ขายบางส่วนเพื่อความสบายใจ</option>
+                                <option value="3" selected data-th="ถือครองต่อ รอการฟื้นตัว" data-en="Hold and wait for recovery">ถือครองต่อ รอการฟื้นตัว</option>
+                                <option value="4" data-th="ลงทุนเพิ่มทันทีเพื่อสะสมของถูก" data-en="Buy more at discount">ลงทุนเพิ่มทันทีเพื่อสะสมของถูก</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-th="3. สัดส่วนรายได้สุทธิที่นำมาลงทุนต่อเดือน?" data-en="3. What percentage of monthly income do you invest?">3. สัดส่วนรายได้สุทธิที่นำมาลงทุนต่อเดือน?</label>
+                            <select id="q3" class="form-select">
+                                <option value="1" data-th="น้อยกว่า 10%" data-en="Less than 10%">น้อยกว่า 10%</option>
+                                <option value="2" selected data-th="10% - 25%" data-en="10% - 25%">10% - 25%</option>
+                                <option value="3" data-th="25% - 50%" data-en="25% - 50%">25% - 50%</option>
+                                <option value="4" data-th="มากกว่า 50%" data-en="More than 50%">มากกว่า 50%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-th="4. ความคุ้นเคยและประสบการณ์ในการลงทุนสินทรัพย์เสี่ยง?" data-en="4. What is your investment experience?">4. ความคุ้นเคยและประสบการณ์ในการลงทุนสินทรัพย์เสี่ยง?</label>
+                            <select id="q4" class="form-select">
+                                <option value="1" data-th="ไม่มีประสบการณ์ (ฝากเงิน/พันธบัตร)" data-en="None (Deposits/Bonds only)">ไม่มีประสบการณ์ (ฝากเงิน/พันธบัตร)</option>
+                                <option value="2" selected data-th="ปานกลาง (กองทุนรวม/หุ้นกู้)" data-en="Moderate (Mutual funds/Corporate bonds)">ปานกลาง (กองทุนรวม/หุ้นกู้)</option>
+                                <option value="3" data-th="สูง (หุ้นไทย/หุ้นต่างประเทศ)" data-en="High (Equities/Global stocks)">สูง (หุ้นไทย/หุ้นต่างประเทศ)</option>
+                                <option value="4" data-th="เชี่ยวชาญ (อนุพันธ์/คริปโท/Tech)" data-en="Expert (Derivatives/Crypto/Tech)">เชี่ยวชาญ (อนุพันธ์/คริปโท/Tech)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-th="5. ความคาดหวังเกี่ยวกับผลตอบแทนและความเสี่ยง?" data-en="5. What is your return expectation?">5. ความคาดหวังเกี่ยวกับผลตอบแทนและความเสี่ยง?</label>
+                            <select id="q5" class="form-select">
+                                <option value="1" data-th="เงินต้นปลอดภัย ผลตอบแทน 2-4% ต่อปี" data-en="Capital preservation (2-4% return)">เงินต้นปลอดภัย ผลตอบแทน 2-4% ต่อปี</option>
+                                <option value="2" selected data-th="สมดุล เติบโตปานกลาง 5-8% ต่อปี" data-en="Balanced growth (5-8% return)">สมดุล เติบโตปานกลาง 5-8% ต่อปี</option>
+                                <option value="3" data-th="เน้นเติบโต ยอมรับความผันผวน 9-12% ต่อปี" data-en="High growth (9-12% return)">เน้นเติบโต ยอมรับความผันผวน 9-12% ต่อปี</option>
+                                <option value="4" data-th="เติบโตสูงสุด ยอมรับการขาดทุนสูง 15%+ ต่อปี" data-en="Aggressive growth (15%+ return)">เติบโตสูงสุด ยอมรับการขาดทุนสูง 15%+ ต่อปี</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary-full" data-th="🎯 ประเมินและทำนายแผนด้วย ML Models" data-en="🎯 Evaluate & Recommend Plan via ML">🎯 ประเมินและทำนายแผนด้วย ML Models</button>
+                    </form>
+                </div>
+
+                <!-- ML Output & Max Drawdown Alert -->
+                <div class="card">
+                    <h2 class="card-title" data-th="💡 แผนการลงทุนที่แนะนำ & คำเตือนความเสี่ยง" data-en="💡 Recommended Plan & Risk Warning Alert">💡 แผนการลงทุนที่แนะนำ & คำเตือนความเสี่ยง</h2>
+                    
+                    <div id="mlRecommendationResult" class="recommendation-box">
+                        <div class="rec-badge" id="recBadge">Balanced Growth Plan</div>
+                        <h3 id="recTitle">แผนการลงทุนเพื่อการเติบโตปานกลาง (Balanced Growth)</h3>
+                        <p id="recDesc">สัดส่วนสินทรัพย์แนะนำ: พันธบัตรรัฐบาล (TBOND) 40%, หุ้นไทย (SET) 30%, หุ้นเทคโนโลยี (US TECH) 20%, ทองคำ (GOLD) 10%</p>
+                    </div>
+
+                    <!-- Mandatory Max Drawdown Alert (Step 6 Task Requirement) -->
+                    <div class="alert-box alert-warning">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-body">
+                            <h4 data-th="คำเตือนสถิติการขาดทุนสูงสุด (Max Drawdown Alert)" data-en="Max Drawdown Historical Warning Alert">คำเตือนสถิติการขาดทุนสูงสุด (Max Drawdown Alert)</h4>
+                            <p id="mddAlertText">
+                                แผนนี้เคยลดลงมากสุด <strong id="mddPct">18.50%</strong> ถ้าลงทุน 100,000 บาท อาจเห็นเงินเหลือต่ำสุดประมาณ <strong id="mddVal">81,500</strong> บาท
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="chart-box">
+                        <h4 class="chart-title" data-th="สัดส่วนการจัดสรรสินทรัพย์ (Asset Allocation)" data-en="Asset Allocation Breakdown">สัดส่วนการจัดสรรสินทรัพย์ (Asset Allocation)</h4>
+                        <canvas id="allocationDonutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supervised Learning Performance Comparison -->
+            <div class="card margin-top">
+                <h2 class="card-title" data-th="🔬 การเปรียบเทียบประสิทธิภาพ Supervised Learning Models" data-en="🔬 Supervised Learning Models Performance Comparison">🔬 การเปรียบเทียบประสิทธิภาพ Supervised Learning Models</h2>
+                <p data-th="เปรียบเทียบความแม่นยำ (Accuracy) ของโมเดล Supervised Learning ในการทำนายแผนที่เหมาะสมแก่ลูกค้า 1,000 คน เทียบกับ Baseline Model (ml.py)" data-en="Comparing accuracy across ML models predicting optimal plans for 1,000 clients vs Baseline Model (ml.py)">
+                    เปรียบเทียบความแม่นยำ (Accuracy) ของโมเดล Supervised Learning ในการทำนายแผนที่เหมาะสมแก่ลูกค้า 1,000 คน เทียบกับ Baseline Model (ml.py)
+                </p>
+
+                <div class="grid-2 margin-top">
+                    <!-- Accuracy Table -->
+                    <div>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th data-th="โมเดล (Model)" data-en="Model Name">โมเดล (Model)</th>
+                                    <th data-th="ความแม่นยำ (Accuracy)" data-en="Accuracy">ความแม่นยำ (Accuracy)</th>
+                                    <th data-th="การประเมิน (Evaluation)" data-en="Evaluation Note">การประเมิน (Evaluation)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Baseline Model</strong></td>
+                                    <td><span class="badge badge-gray">52.00%</span></td>
+                                    <td>ทำนายคลาสนิยมสูงสุด (Majority Class)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Logistic Regression</strong></td>
+                                    <td><span class="badge badge-blue">84.50%</span></td>
+                                    <td>โมเดลเชิงเส้นตรง อ่านง่าย เข้าใจง่าย</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>Random Forest Classifier</strong></td>
+                                    <td><span class="badge badge-green">91.20%</span></td>
+                                    <td>depth=3, n_estimators=100 (ความแม่นยำสูงสุด)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 class="margin-top" data-th="Confusion Matrix (Random Forest)" data-en="Confusion Matrix (Random Forest)">Confusion Matrix (Random Forest)</h4>
+                        <table class="styled-table cm-table">
+                            <thead>
+                                <tr>
+                                    <th>Actual / Pred</th>
+                                    <th>Conservative</th>
+                                    <th>Balanced</th>
+                                    <th>Growth</th>
+                                    <th>Aggressive</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Actual Conservative</strong></td>
+                                    <td class="cell-match">48</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Actual Balanced</strong></td>
+                                    <td>1</td>
+                                    <td class="cell-match">55</td>
+                                    <td>3</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Actual Growth</strong></td>
+                                    <td>0</td>
+                                    <td>2</td>
+                                    <td class="cell-match">42</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Actual Aggressive</strong></td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td class="cell-match">45</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Model Accuracy Bar Chart -->
+                    <div class="chart-box">
+                        <h4 class="chart-title" data-th="กราฟเปรียบเทียบความแม่นยำ (%)" data-en="Model Accuracy Comparison (%)">กราฟเปรียบเทียบความแม่นยำ (%)</h4>
+                        <canvas id="modelBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Unsupervised Learning (Customer Clustering) -->
+        <section id="tab2" class="tab-content">
+            <div class="card">
+                <h2 class="card-title" data-th="📊 Unsupervised Learning: K-Means Customer Clustering" data-en="📊 Unsupervised Learning: K-Means Customer Clustering">📊 Unsupervised Learning: K-Means Customer Clustering</h2>
+                <p data-th="จัดกลุ่มพฤติกรรมลูกค้า 1,000 คน โดยไม่ต้องใช้ Label ล่วงหน้า เพื่อค้นหาเซกเมนต์ของนักลงทุน (Client Segmentation) ในมิติ อายุ vs ระดับความเสี่ยง" data-en="Clustering 1,000 client profiles into distinct investment behavior segments using K-Means (Age vs Risk Scale).">
+                    จัดกลุ่มพฤติกรรมลูกค้า 1,000 คน โดยไม่ต้องใช้ Label ล่วงหน้า เพื่อค้นหาเซกเมนต์ของนักลงทุน (Client Segmentation) ในมิติ อายุ vs ระดับความเสี่ยง
+                </p>
+
+                <div class="metrics-row margin-top">
+                    <div class="metric-card">
+                        <div class="metric-label" data-th="จำนวนกลุ่ม (Clusters K)" data-en="Number of Clusters (K)">จำนวนกลุ่ม (Clusters K)</div>
+                        <div class="metric-value">4 Clusters</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label" data-th="Silhouette Score" data-en="Silhouette Score">Silhouette Score</div>
+                        <div class="metric-value text-green">0.68</div>
+                        <div class="metric-sub">วัดความคุ้มค่าของการแบ่งกลุ่ม (ดีมาก)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label" data-th="Inertia (Within SS)" data-en="Inertia (Within SS)">Inertia (Within SS)</div>
+                        <div class="metric-value text-blue">1,245.8</div>
+                        <div class="metric-sub">ระยะห่างรวมถึง Center (Elbow Method)</div>
+                    </div>
+                </div>
+
+                <div class="grid-2 margin-top">
+                    <!-- Scatter Plot -->
+                    <div class="chart-box">
+                        <h4 class="chart-title" data-th="K-Means Scatter Plot (อายุ vs คะแนนความเสี่ยง)" data-en="K-Means Scatter Plot (Age vs Risk Score)">K-Means Scatter Plot (อายุ vs คะแนนความเสี่ยง)</h4>
+                        <canvas id="clusterScatterChart"></canvas>
+                    </div>
+
+                    <!-- Cluster Segments Table -->
+                    <div>
+                        <h4 data-th="สรุป 4 เซกเมนต์ของกลุ่มลูกค้า (Cluster Profiles)" data-en="Client Cluster Profiles Summary">สรุป 4 เซกเมนต์ของกลุ่มลูกค้า (Cluster Profiles)</h4>
+                        <table class="styled-table margin-top">
+                            <thead>
+                                <tr>
+                                    <th data-th="กลุ่ม (Cluster)" data-en="Cluster">กลุ่ม (Cluster)</th>
+                                    <th data-th="ช่วงอายุ" data-en="Age Range">ช่วงอายุ</th>
+                                    <th data-th="สเกลความเสี่ยง" data-en="Risk Level">สเกลความเสี่ยง</th>
+                                    <th data-th="สไตล์การลงทุนที่เหมาะสม" data-en="Recommended Style">สไตล์การลงทุนที่เหมาะสม</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge badge-purple">Cluster 0</span></td>
+                                    <td>55 - 70 ปี</td>
+                                    <td>1.0 - 2.2 (ต่ำ)</td>
+                                    <td>Conservative Elders (เน้นคุ้มครองเงินต้น)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-blue">Cluster 1</span></td>
+                                    <td>35 - 54 ปี</td>
+                                    <td>2.0 - 3.2 (ปานกลาง)</td>
+                                    <td>Moderate Accumulators (สะสมความมั่งคั่ง)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-green">Cluster 2</span></td>
+                                    <td>20 - 34 ปี</td>
+                                    <td>3.5 - 4.0 (สูง)</td>
+                                    <td>Aggressive Growth Seekers (ลุยหุ้น/Tech)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-amber">Cluster 3</span></td>
+                                    <td>25 - 45 ปี</td>
+                                    <td>2.8 - 3.8 (สูงกลาง)</td>
+                                    <td>Opportunistic Investors (กระจายความเสี่ยง)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Portfolio Simulator & Financial Metrics -->
+        <section id="tab3" class="tab-content">
+            <div class="grid-2">
+                <!-- Portfolio Slider Controls -->
+                <div class="card">
+                    <h2 class="card-title" data-th="⚙️ ปรับสัดส่วนพอร์ตการลงทุน (plans.py)" data-en="⚙️ Custom Asset Allocation Sliders (plans.py)">⚙️ ปรับสัดส่วนพอร์ตการลงทุน (plans.py)</h2>
+                    <p data-th="ปรับสัดส่วนสินทรัพย์ และระบบจะทำการตรวจสอบว่ารวมได้ 100% หรือไม่ (check_plan)" data-en="Adjust asset percentages. Total must equal 100% (validated via check_plan).">
+                        ปรับสัดส่วนสินทรัพย์ และระบบจะทำการตรวจสอบว่ารวมได้ 100% หรือไม่ (check_plan)
+                    </p>
+
+                    <div class="slider-group">
+                        <div class="slider-label"><span>🏛️ พันธบัตรรัฐบาล (TBOND)</span><span id="valTbond">40%</span></div>
+                        <input type="range" min="0" max="100" value="40" class="slider" id="slideTbond" oninput="updatePortfolioSim()">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label"><span>📈 หุ้นไทย (SET)</span><span id="valSet">30%</span></div>
+                        <input type="range" min="0" max="100" value="30" class="slider" id="slideSet" oninput="updatePortfolioSim()">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label"><span>🚀 หุ้นเทคโนโลยี (US TECH)</span><span id="valTech">20%</span></div>
+                        <input type="range" min="0" max="100" value="20" class="slider" id="slideTech" oninput="updatePortfolioSim()">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label"><span>🥇 ทองคำ (GOLD)</span><span id="valGold">10%</span></div>
+                        <input type="range" min="0" max="100" value="10" class="slider" id="slideGold" oninput="updatePortfolioSim()">
+                    </div>
+
+                    <!-- Total Allocation Check -->
+                    <div id="totalWeightBox" class="weight-status status-ok margin-top">
+                        <span data-th="สัดส่วนรวมทั้งหมด:" data-en="Total Allocation:">สัดส่วนรวมทั้งหมด:</span> <strong id="totalWeightVal">100%</strong>
+                        <span id="weightStatusText">(ถูกต้องพร้อมคำนวณ)</span>
+                    </div>
+                </div>
+
+                <!-- Calculated Metrics (metrics.py) -->
+                <div class="card">
+                    <h2 class="card-title" data-th="📊 ดัชนีวัดผลตอบแทนและความเสี่ยง (metrics.py)" data-en="📊 Financial Metrics & Performance (metrics.py)">📊 ดัชนีวัดผลตอบแทนและความเสี่ยง (metrics.py)</h2>
+
+                    <div class="metrics-grid margin-top">
+                        <div class="metric-card">
+                            <div class="metric-label">Total Return (ผลตอบแทนรวม)</div>
+                            <div class="metric-value text-green" id="mTotalReturn">+12.45%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Annualized Return (ต่อปี)</div>
+                            <div class="metric-value text-green" id="mAnnualReturn">+6.82%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Max Drawdown (ขาดทุนสูงสุด)</div>
+                            <div class="metric-value text-red" id="mMaxDrawdown">-14.20%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Return / Risk (Sharpe)</div>
+                            <div class="metric-value text-blue" id="mSharpe">1.18</div>
+                        </div>
+                    </div>
+
+                    <!-- Capital Growth Chart -->
+                    <div class="chart-box margin-top">
+                        <h4 class="chart-title" data-th="จำลองการเติบโตของเงินทุน 100,000 บาท (1 ปี)" data-en="1-Year Portfolio Growth Simulation (100,000 THB Base)">จำลองการเติบโตของเงินทุน 100,000 บาท (1 ปี)</h4>
+                        <canvas id="growthLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p data-th="⚠️ Disclaimer: ข้อมูลทั้งหมดเป็นข้อมูลจำลองเพื่อการศึกษาในรายวิชา พัฒนาด้วย Python, Pandas, Scikit-Learn และ JavaScript" data-en="⚠️ Disclaimer: All data is simulated for educational purposes. Built with Python, Pandas, Scikit-Learn, and JavaScript.">
+            ⚠️ Disclaimer: ข้อมูลทั้งหมดเป็นข้อมูลจำลองเพื่อการศึกษาในรายวิชา พัฒนาด้วย Python, Pandas, Scikit-Learn และ JavaScript
+        </p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
