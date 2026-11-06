@@ -386,6 +386,9 @@ body {
 /* Chart Container */
 .chart-box {
     margin-top: 1rem;
+    position: relative;
+    height: 260px;
+    max-width: 100%;
 }
 .chart-title {
     font-size: 0.9rem;
